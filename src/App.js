@@ -1,6 +1,6 @@
 import logo from "./logo.svg";
 import "./App.css";
-import React, { Component } from "react";
+import React, { Component, createRef } from "react";
 import Hello from "./hello.js";
 
 const products = [
@@ -51,11 +51,14 @@ export default class Product extends Component {
   remove = (product) => {
     this.setState((state) => {
       const cart = [...state.cart];
-      cart.splice(cart.length - 1, 1);
+      let total = state.total;
+      if (cart.indexOf(product.name) !== -1) {
+        cart.splice(cart.indexOf(product.name), 1);
+        total -= product.price;
+      }
       return {
         cart,
-        total:
-          state.total - product.price > 0 ? state.total - product.price : 0,
+        total,
       };
     });
   };
